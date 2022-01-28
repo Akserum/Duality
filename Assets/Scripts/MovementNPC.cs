@@ -43,17 +43,14 @@ public class MovementNPC : MonoBehaviour
         do
         {
             tmpTest = destinations[Random.Range(0, destinations.Count)];
-            print("test");
         } while (tmpTest == destination);
         destination = tmpTest;
         isStandingStill = false;
     }
     private void OnTriggerEnter(Collider other)
     {
-        print("test");
         if (other.transform.position == destination.transform.position)
         {
-            print("enter");
             isStandingStill = true;
         }
     }

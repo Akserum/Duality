@@ -6,15 +6,17 @@ TagManager:
   tags:
   - PickableObject
   - Closet
+  - Destination
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
   - InteractibleObjects
+  - Wall
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - PickableObject
   - 
   - 
   - 

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerInputs))]
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovements : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class PlayerMovements : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float gravityValue;
 
-    private PlayerInputs _inputs;
+    private PlayerInput _inputs;
     private CharacterController _cc;
 
     private Vector3 _motion;
@@ -29,14 +29,15 @@ public class PlayerMovements : MonoBehaviour
 
     private void Initialize()
     {
-        _inputs = GetComponent<PlayerInputs>();
+        _inputs = GetComponent<PlayerInput>();
         _cc = GetComponent<CharacterController>();
     }
 
     private void PlayerMotion()
     {
+        transform.localRotation = Quaternion.Euler(0f, _inputs.camera.transform.rotation.eulerAngles.y, 0);
         //movements
-        _motion = transform.right * _inputs.MoveX + transform.forward * _inputs.MoveY;
+        _motion = transform.right * _inputs.actions["Movement"].ReadValue<Vector2>().x + transform.forward * _inputs.actions["Movement"].ReadValue<Vector2>().y;
         _movement = _motion * speed * Time.deltaTime;
 
         //gravity

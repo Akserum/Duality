@@ -13,6 +13,8 @@ public class PickUpObject : MonoBehaviour
     //
     [SerializeField] private Transform pickUpPosition;
 
+    [SerializeField] private int layerNumber;
+
     private PlayerInputs _inputs;
 
     //pick up
@@ -25,6 +27,9 @@ public class PickUpObject : MonoBehaviour
     //material
     private Material _basedMaterial;
 
+    public bool getCanPickUp => _canPickUp;
+    public GameObject getPickObject => _pickableObject;
+
     void Start()
     {
         Initialize();
@@ -33,7 +38,7 @@ public class PickUpObject : MonoBehaviour
     void Update()
     {
         CheckPickUp();
-        PickingUpObject();
+        //PickingUpObject();
     }
 
     private void Initialize()
@@ -106,9 +111,38 @@ public class PickUpObject : MonoBehaviour
     private void ReturnMaterial()
     {
         if (_pickMaterial)
+        {
             _pickableObject.GetComponent<Renderer>().material = _basedMaterial;
-
+        }
         _pickMaterial = false;
+        _pickableObject = null;
+    }
+    #endregion
+
+    #region PickObjects
+
+    /// <summary>
+    /// Pick an Object if the mouse 0 button is pressed
+    /// </summary>
+    private void PickingUpObject()
+    {
+        if (!_canPickUp)
+            return;
+
+        if (_inputs.PickUp)
+        {
+            _pickPosition = _pickableObject.transform;
+            //if the player already have an object 
+            if (_pickObject != null)
+            {
+                Drop();
+
+                Pick();
+            }
+            //if not
+            else
+                Pick();
+        }
     }
     #endregion
 

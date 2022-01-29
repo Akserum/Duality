@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
         {
             if (pickUpObject.getPickObject.GetComponent<InteractableObject>().task.objectiveName == currentObjective.task.objectiveName)
             {
+                print("test");
                 renderActions.SetActive(true);
                 choixMechant.text = pickUpObject.getPickObject.GetComponent<InteractableObject>().task.mechantChoix;
                 choixGentil.text = pickUpObject.getPickObject.GetComponent<InteractableObject>().task.gentilChoix;
@@ -48,7 +49,7 @@ public class GameManager : MonoBehaviour
                 {
                     //currentObjective.task.mechantAnimation.Play();
                     print("mechant");
-                    moralite += 0.1f;
+                    moralite -= 0.1f;
                     moraliteSlider.value = moralite;
                     NextObjective();
                     renderActions.SetActive(false);
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
                 {
                     //currentObjective.task.gentilAnimation.Play();
                     print("gentil");
-                    moralite -= 0.1f;
+                    moralite += 0.1f;
                     moraliteSlider.value = moralite;
                     NextObjective();
                     renderActions.SetActive(false);

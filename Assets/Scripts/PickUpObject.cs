@@ -6,7 +6,8 @@ public class PickUpObject : MonoBehaviour
 {
     //RAY 
     [SerializeField] private float maxDistancePickp;
-    [SerializeField] private LayerMask LayerNumPickable;
+    [SerializeField] private LayerMask interactibleLayer;
+    [SerializeField] private int layerNum;
     [SerializeField] private Material highlightMaterial;
 
     //
@@ -55,18 +56,38 @@ public class PickUpObject : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction, Color.red);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp, LayerNumPickable))
+
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp, interactibleLayer))
         {
-            _canPickUp = true;
             GetMaterial(hit.transform.gameObject);
+
+            if (hit.transform.gameObject.tag == "PickableObject")
+            {
+                _canPickUp = true;
+            }
+            else if(hit.transform.gameObject.tag == "Closet")
+            {
+                Debug.Log("Armoire");
+                OpenCloset(hit.transform.gameObject);
+            }
         }
         else
         {
             _canPickUp = false;
-
             ReturnMaterial();
         }
     }
+
+    #region ClosetInteractions
+    private void OpenCloset(GameObject obj)
+    {
+        if (_inputs.Interact)
+        {
+            Debug.Log(obj.name);
+            obj.GetComponent<ClosetScript>().ClosetBool();
+        }
+    }
+    #endregion
 
     #region GetAndReturnMaterial
     /// <summary>
@@ -123,6 +144,33 @@ public class PickUpObject : MonoBehaviour
                 Pick();
         }
     }
+    #endregion
+
+    #region PickObjects
+
+    /// <summary>
+    /// Pick an Object if the mouse 0 button is pressed
+    /// </summary>
+    private void PickingUpObject()
+    {
+        if (!_canPickUp)
+            return;
+
+        if (_inputs.PickUp)
+        {
+            _pickPosition = _pickableObject.transform;
+            //if the player already have an object 
+            if (_pickObject != null)
+            {
+                Drop();
+
+                Pick();
+            }
+            //if not
+            else
+                Pick();
+        }
+    }
 
 
     /// <summary>
@@ -150,8 +198,8 @@ public class PickUpObject : MonoBehaviour
         _pickObject.transform.parent = null;
         //set his position at the same positon of the pickable object
         _pickObject.transform.position = _pickPosition.position;
-        //on reset l'objet en pickablesObjects
-        _pickObject.layer = layerNumber;
+        //reset his layer
+        _pickObject.layer = layerNum;
     }
     #endregion
 }

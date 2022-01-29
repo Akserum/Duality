@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bebe
   m_EditorClassIdentifier: 
   objectiveName: "Atteindre le b\xE9b\xE9"
-  firstChoice: "R\xE9veiller l'enfant"
-  secondChoice: Bercer l'enfant
+  gentilChoix: "Bercer le b\xE9b\xE9"
+  mechantChoix: "Apreurer le b\xE9b\xE9"
   firstAnimation: {fileID: 0}
   secondAnimation: {fileID: 0}

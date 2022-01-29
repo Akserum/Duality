@@ -16,25 +16,48 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI objective;
     [SerializeField] private GameObject renderActions;
     [SerializeField] private TextMeshProUGUI choixGentil;
+    [SerializeField] private TextMeshProUGUI choixGentilControls;
     [SerializeField] private TextMeshProUGUI choixMechant;
+    [SerializeField] private TextMeshProUGUI choixMechantControls;
+
     //Si le joueur est gentil ou mechant
     [SerializeField] private float moralite;
     [SerializeField] private Slider moraliteSlider;
     //fov pour savoir si le joueur est vu
     [SerializeField] private FieldOfView fov;
     [SerializeField] private PlayerInput playerInput;
-
+    [SerializeField] private string currentInput;
+    void LateUpdate()
+    {
+        if (playerInput.currentControlScheme != currentInput)
+        {
+            currentInput = playerInput.currentControlScheme;
+            if (currentInput.ToString()=="Keyboard and Mouse")
+            {
+                print("keyboard");
+                choixGentilControls.text = "A";
+                choixMechantControls.text = "E";
+            }
+            else if (currentInput.ToString() == "Gamepad")
+            {
+                print("gamepad");
+                choixGentilControls.text = "A";
+                choixMechantControls.text = "B";
+            }
+        }
+    }
     void Start()
     {
+        Time.timeScale = 1f;
         moralite = 0.5f;
         moraliteSlider.value = 0.5f;
         playerInput = GameObject.FindObjectOfType<PlayerInput>();
+        currentInput = playerInput.currentControlScheme;
         fov = GameObject.FindObjectOfType<FieldOfView>();
         interactableObjects = GameObject.FindObjectsOfType<InteractableObject>();
         pickUpObject = GameObject.FindObjectOfType<PickUpObject>();
         NextObjective();
     }
-    // Update is called once per frame
     void Update()
     {
         if (pickUpObject.getCanPickUp)
@@ -76,7 +99,7 @@ public class GameManager : MonoBehaviour
             //gameover ici
         }
     }
-
+    
     private void RandomizeObjective()
     {
         InteractableObject tmpTest;
@@ -91,12 +114,19 @@ public class GameManager : MonoBehaviour
     {
         if (currentObjectiveNumber == interactableObjects.Length)
         {
-            print("fini le jeu");
+            Time.timeScale = 0f;
+            //fin jeu
+
         }
         else
         {
+            if (currentObjectiveNumber != 0)
+            {
+                currentObjective.GetComponentInChildren<Transform>().GetChild(0).gameObject.SetActive(false);
+            }
             currentObjective = interactableObjects[currentObjectiveNumber];
             objective.text = currentObjective.task.objectiveName;
+            currentObjective.GetComponentInChildren<Transform>().GetChild(0).gameObject.SetActive(true);
             currentObjectiveNumber += 1;
         }
     }

@@ -13,6 +13,8 @@ public class PickUpObject : MonoBehaviour
     //
     [SerializeField] private Transform pickUpPosition;
 
+    [SerializeField] private int layerNumber;
+
     private PlayerInputs _inputs;
 
     //pick up
@@ -25,6 +27,8 @@ public class PickUpObject : MonoBehaviour
     //material
     private Material _basedMaterial;
 
+    public bool getCanPickUp => _canPickUp;
+
     void Start()
     {
         Initialize();
@@ -33,7 +37,7 @@ public class PickUpObject : MonoBehaviour
     void Update()
     {
         CheckPickUp();
-        PickingUpObject();
+        //PickingUpObject();
     }
 
     private void Initialize()
@@ -156,8 +160,8 @@ public class PickUpObject : MonoBehaviour
         _pickObject.transform.parent = null;
         //set his position at the same positon of the pickable object
         _pickObject.transform.position = _pickPosition.position;
-        //reset his layer
-        _pickObject.layer = 3;
+        //on reset l'objet en pickablesObjects
+        _pickObject.layer = layerNumber;
     }
     #endregion
 }

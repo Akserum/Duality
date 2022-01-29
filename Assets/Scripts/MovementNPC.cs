@@ -12,7 +12,6 @@ public class MovementNPC : MonoBehaviour
 
     [SerializeField]
     private List<Transform> destinations;
-
     //+ ajouter liste d'animations
     private bool isStandingStill = true;
 
@@ -29,21 +28,15 @@ public class MovementNPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isStandingStill)
-        {
+        if (!isStandingStill) { 
             agent.destination = destination.position;
         }
-        else if (isStandingStill)
+        if (isStandingStill)
         {
             randomizeDestination();
         }
     }
-    IEnumerator waiter()
-    {
-        yield return new WaitForSeconds(4);
-        isStandingStill = false;
 
-    }
     private void randomizeDestination()
     {
         Transform tmpTest;
@@ -52,7 +45,7 @@ public class MovementNPC : MonoBehaviour
             tmpTest = destinations[Random.Range(0, destinations.Count)];
         } while (tmpTest == destination);
         destination = tmpTest;
-        StartCoroutine(waiter());
+        isStandingStill = false;
     }
     private void OnTriggerEnter(Collider other)
     {

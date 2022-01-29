@@ -10,7 +10,7 @@ public class CameraRotation : MonoBehaviour
     private float refRotation = 0f;
 
     private PlayerInputs _inputs;
-
+    
     void Start()
     {
         _inputs = GetComponentInParent<PlayerInputs>();

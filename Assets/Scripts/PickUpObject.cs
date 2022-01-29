@@ -6,8 +6,13 @@ public class PickUpObject : MonoBehaviour
 {
     //RAY 
     [SerializeField] private float maxDistancePickp;
+<<<<<<< HEAD
     [SerializeField] private LayerMask interactibleLayer;
     [SerializeField] private int layerNum;
+=======
+    [SerializeField] private int LayerNumPickable;
+    [SerializeField] private int LayerNumCloset;
+>>>>>>> parent of fde6b4f (obj ok + des trucs avec la camera)
     [SerializeField] private Material highlightMaterial;
 
     //
@@ -28,7 +33,6 @@ public class PickUpObject : MonoBehaviour
     private Material _basedMaterial;
 
     public bool getCanPickUp => _canPickUp;
-    public GameObject getPickObject => _pickableObject;
 
     void Start()
     {
@@ -56,6 +60,7 @@ public class PickUpObject : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction, Color.red);
         RaycastHit hit;
 
+<<<<<<< HEAD
 
         if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp, interactibleLayer))
         {
@@ -69,6 +74,23 @@ public class PickUpObject : MonoBehaviour
             {
                 Debug.Log("Armoire");
                 OpenCloset(hit.transform.gameObject);
+=======
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp))
+        {
+            Debug.Log(hit.transform.gameObject.name);
+
+            if (hit.transform.gameObject.layer == LayerNumPickable)
+            {
+                Debug.Log("Je suis un objet");
+                _canPickUp = true;
+                GetMaterial(hit.transform.gameObject);
+            }
+
+            if (hit.transform.gameObject.layer == LayerNumCloset)
+            {
+                Debug.Log("Je suis une armoire");
+                GetMaterial(hit.transform.gameObject);
+>>>>>>> parent of fde6b4f (obj ok + des trucs avec la camera)
             }
         }
         else
@@ -101,6 +123,7 @@ public class PickUpObject : MonoBehaviour
             Renderer renderer = obj.GetComponent<Renderer>();
             _basedMaterial = renderer.material;
             renderer.material = highlightMaterial;
+            Debug.Log(obj);
             _pickMaterial = true;
         }
     }
@@ -111,11 +134,9 @@ public class PickUpObject : MonoBehaviour
     private void ReturnMaterial()
     {
         if (_pickMaterial)
-        {
             _pickableObject.GetComponent<Renderer>().material = _basedMaterial;
-        }
+
         _pickMaterial = false;
-        _pickableObject = null;
     }
     #endregion
 

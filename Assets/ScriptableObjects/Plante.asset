@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Plante
   m_EditorClassIdentifier: 
   objectiveName: Atteindre la plante
-  gentilChoix: Arroser la plante
-  mechantChoix: "Br\xFBler la plante"
+  firstChoice: "Br\xFBler la plante"
+  secondChoice: Arroser la plante
   firstAnimation: {fileID: 0}
   secondAnimation: {fileID: 0}

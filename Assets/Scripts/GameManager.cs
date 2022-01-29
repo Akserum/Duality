@@ -8,9 +8,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InteractableObject[] interactableObjects;
     [SerializeField] private InteractableObject currentObjective;
     [SerializeField] private TextMeshProUGUI objective;
+    [SerializeField] private PickUpObject pickUpObject;
+
     void Start()
     {
         interactableObjects = GameObject.FindObjectsOfType<InteractableObject>();
+        pickUpObject = GameObject.FindObjectOfType<PickUpObject>();
         randomizeObjective();
     }
 

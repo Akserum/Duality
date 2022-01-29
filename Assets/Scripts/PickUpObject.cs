@@ -26,6 +26,8 @@ public class PickUpObject : MonoBehaviour
     //material
     private Material _basedMaterial;
 
+    public bool getCanPickUp => _canPickUp;
+
     void Start()
     {
         Initialize();

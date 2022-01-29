@@ -6,7 +6,8 @@ public class PickUpObject : MonoBehaviour
 {
     //RAY 
     [SerializeField] private float maxDistancePickp;
-    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private int LayerNumPickable;
+    [SerializeField] private int LayerNumCloset;
     [SerializeField] private Material highlightMaterial;
 
     //
@@ -45,23 +46,32 @@ public class PickUpObject : MonoBehaviour
     }
 
     /// <summary>
-    /// Verifie si le joueur pointe vers un objet
+    /// Check if an object can be grab
     /// </summary>
     private void CheckPickUp()
     {
-        //on set la ray de detection
+        //set the ray
         Ray ray = new Ray(transform.position, transform.forward);
         Debug.DrawRay(ray.origin, ray.direction, Color.red);
         RaycastHit hit;
 
-        //on verifie s'il hit un objet portable
-        //si oui
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp, layerMask))
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp))
         {
-            _canPickUp = true;
-            GetMaterial(hit.transform.gameObject);
+            Debug.Log(hit.transform.gameObject.name);
+
+            if (hit.transform.gameObject.layer == LayerNumPickable)
+            {
+                Debug.Log("Je suis un objet");
+                _canPickUp = true;
+                GetMaterial(hit.transform.gameObject);
+            }
+
+            if (hit.transform.gameObject.layer == LayerNumCloset)
+            {
+                Debug.Log("Je suis une armoire");
+                GetMaterial(hit.transform.gameObject);
+            }
         }
-        //si non
         else
         {
             _canPickUp = false;
@@ -69,37 +79,10 @@ public class PickUpObject : MonoBehaviour
         }
     }
 
+    #region GetAndReturnMaterial
     /// <summary>
-    /// Permet de pick un objet si le joueur appuie sur le bouton d'interaction
+    /// get the material of the picked up object
     /// </summary>
-    private void PickingUpObject()
-    {
-        //si le joueur 
-        if (!_canPickUp)
-            return;
-
-        //si il intéragit
-        if (_inputs.Interact)
-        {
-            //on set la position du nouvel objet qu'on pick
-            _pickPosition = _pickableObject.transform;
-            //si le joueur a deja pick un objet
-            if (_pickObject != null)
-            {
-                Drop();
-
-                Pick();
-            }
-            //s'il n'a pas d'objet deja pick
-            else
-                Pick();
-        }
-    }
-
-    /// <summary>
-    /// aller chercher le materiau de l'objet a pick
-    /// </summary>
-    /// <param name="obj"></param>
     private void GetMaterial(GameObject obj)
     {
         if (!_pickMaterial)
@@ -114,7 +97,7 @@ public class PickUpObject : MonoBehaviour
     }
 
     /// <summary>
-    /// return le material de base qui est set
+    /// return the previous material
     /// </summary>
     private void ReturnMaterial()
     {
@@ -123,34 +106,62 @@ public class PickUpObject : MonoBehaviour
 
         _pickMaterial = false;
     }
+    #endregion
+
+    #region PickObjects
+
+    /// <summary>
+    /// Pick an Object if the mouse 0 button is pressed
+    /// </summary>
+    private void PickingUpObject()
+    {
+        if (!_canPickUp)
+            return;
+
+        if (_inputs.PickUp)
+        {
+            _pickPosition = _pickableObject.transform;
+            //if the player already have an object 
+            if (_pickObject != null)
+            {
+                Drop();
+
+                Pick();
+            }
+            //if not
+            else
+                Pick();
+        }
+    }
 
 
     /// <summary>
-    /// pick un objet
+    /// pick an object
     /// </summary>
     private void Pick()
     {
-        //l'objet qu'on peut pick
+        //pickable object
         _pickObject = _pickableObject;
-        //set son ayer sur 0
+        //set his new layer
         _pickObject.layer = 0;
-        //on set le nouvel objet en enfant
+        //set his new parent
         _pickObject.transform.parent = transform;
-        //set sa position
+        //set his new position
         _pickObject.transform.position = pickUpPosition.position;
         ReturnMaterial();
     }
 
     /// <summary>
-    /// drop un objet
+    /// drop an object
     /// </summary>
     private void Drop()
     {
-        //on lache l'objet qu'il portait
+        //set the parent of the previous object at null
         _pickObject.transform.parent = null;
-        //on le place a la position du dernier objet recup
+        //set his position at the same positon of the pickable object
         _pickObject.transform.position = _pickPosition.position;
         //on reset l'objet en pickablesObjects
         _pickObject.layer = layerNumber;
     }
+    #endregion
 }

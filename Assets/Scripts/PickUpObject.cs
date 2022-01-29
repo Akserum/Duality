@@ -6,8 +6,7 @@ public class PickUpObject : MonoBehaviour
 {
     //RAY 
     [SerializeField] private float maxDistancePickp;
-    [SerializeField] private int LayerNumPickable;
-    [SerializeField] private int LayerNumCloset;
+    [SerializeField] private LayerMask LayerNumPickable;
     [SerializeField] private Material highlightMaterial;
 
     //
@@ -28,6 +27,7 @@ public class PickUpObject : MonoBehaviour
     private Material _basedMaterial;
 
     public bool getCanPickUp => _canPickUp;
+    public GameObject getPickObject => _pickableObject;
 
     void Start()
     {
@@ -55,26 +55,15 @@ public class PickUpObject : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction, Color.red);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp))
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp, LayerNumPickable))
         {
-            Debug.Log(hit.transform.gameObject.name);
-
-            if (hit.transform.gameObject.layer == LayerNumPickable)
-            {
-                Debug.Log("Je suis un objet");
-                _canPickUp = true;
-                GetMaterial(hit.transform.gameObject);
-            }
-
-            if (hit.transform.gameObject.layer == LayerNumCloset)
-            {
-                Debug.Log("Je suis une armoire");
-                GetMaterial(hit.transform.gameObject);
-            }
+            _canPickUp = true;
+            GetMaterial(hit.transform.gameObject);
         }
         else
         {
             _canPickUp = false;
+
             ReturnMaterial();
         }
     }
@@ -91,7 +80,6 @@ public class PickUpObject : MonoBehaviour
             Renderer renderer = obj.GetComponent<Renderer>();
             _basedMaterial = renderer.material;
             renderer.material = highlightMaterial;
-            Debug.Log(obj);
             _pickMaterial = true;
         }
     }
@@ -102,9 +90,11 @@ public class PickUpObject : MonoBehaviour
     private void ReturnMaterial()
     {
         if (_pickMaterial)
+        {
             _pickableObject.GetComponent<Renderer>().material = _basedMaterial;
-
+        }
         _pickMaterial = false;
+        _pickableObject = null;
     }
     #endregion
 

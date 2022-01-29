@@ -6,8 +6,8 @@ using UnityEngine;
 public class Tasks : ScriptableObject
 {
     public string objectiveName;
-    public string firstChoice;
-    public string secondChoice;
+    public string gentilChoix;
+    public string mechantChoix;
     public Animation firstAnimation;
     public Animation secondAnimation;
 }

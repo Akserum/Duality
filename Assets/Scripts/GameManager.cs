@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
+
+
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI choixGentilControls;
     [SerializeField] private TextMeshProUGUI choixMechant;
     [SerializeField] private TextMeshProUGUI choixMechantControls;
+    [SerializeField] private PickUpObject pickUpObject; 
 
     //Si le joueur est gentil ou mechant
     [SerializeField] private float moralite;
@@ -21,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FieldOfView fov;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private string currentInput;
+    [SerializeField] private int currentObjectiveNumber;
+
     void LateUpdate()
     {
         if (playerInput.currentControlScheme != currentInput)
@@ -50,7 +57,7 @@ public class GameManager : MonoBehaviour
         fov = GameObject.FindObjectOfType<FieldOfView>();
         interactableObjects = GameObject.FindObjectsOfType<InteractableObject>();
         pickUpObject = GameObject.FindObjectOfType<PickUpObject>();
-        randomizeObjective();
+        NextObjective();
     }
     void Update()
     {

@@ -1,20 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PickUpObject : MonoBehaviour
 {
     //RAY 
     [SerializeField] private float maxDistancePickp;
     [SerializeField] private LayerMask interactibleLayer;
+    [SerializeField] private int layerNum;
     [SerializeField] private Material highlightMaterial;
 
     //
     [SerializeField] private Transform pickUpPosition;
 
-    [SerializeField] private int layerNumber;
-
-    private PlayerInputs _inputs;
+    private PlayerInput _inputs;
 
     //pick up
     private bool _canPickUp;
@@ -41,7 +41,7 @@ public class PickUpObject : MonoBehaviour
 
     private void Initialize()
     {
-        _inputs = GetComponentInParent<PlayerInputs>();
+        _inputs = GetComponentInParent<PlayerInput>();
     }
 
     /// <summary>
@@ -53,6 +53,8 @@ public class PickUpObject : MonoBehaviour
         Ray ray = new Ray(transform.position, transform.forward);
         Debug.DrawRay(ray.origin, ray.direction, Color.red);
         RaycastHit hit;
+
+
         if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp, interactibleLayer))
         {
             GetMaterial(hit.transform.gameObject);
@@ -77,7 +79,7 @@ public class PickUpObject : MonoBehaviour
     #region ClosetInteractions
     private void OpenCloset(GameObject obj)
     {
-        if (_inputs.Interact)
+        if (_inputs.actions["InteractE"].triggered)
         {
             Debug.Log(obj.name);
             obj.GetComponent<ClosetScript>().ClosetBool();
@@ -119,55 +121,55 @@ public class PickUpObject : MonoBehaviour
     /// <summary>
     /// Pick an Object if the mouse 0 button is pressed
     /// </summary>
-    private void PickingUpObject()
-    {
-        if (!_canPickUp)
-            return;
+    //private void PickingUpObject()
+    //{
+    //    if (!_canPickUp)
+    //        return;
 
-        if (_inputs.PickUp)
-        {
-            _pickPosition = _pickableObject.transform;
-            //if the player already have an object 
-            if (_pickObject != null)
-            {
-                Drop();
+    //    if (_inputs.PickUp)
+    //    {
+    //        _pickPosition = _pickableObject.transform;
+    //        //if the player already have an object 
+    //        if (_pickObject != null)
+    //        {
+    //            Drop();
 
-                Pick();
-            }
-            //if not
-            else
-                Pick();
-        }
-    }
+    //            Pick();
+    //        }
+    //        //if not
+    //        else
+    //            Pick();
+    //    }
+    //}
 
 
     /// <summary>
     /// pick an object
     /// </summary>
-    private void Pick()
-    {
-        //pickable object
-        _pickObject = _pickableObject;
-        //set his new layer
-        _pickObject.layer = 0;
-        //set his new parent
-        _pickObject.transform.parent = transform;
-        //set his new position
-        _pickObject.transform.position = pickUpPosition.position;
-        ReturnMaterial();
-    }
+    //private void Pick()
+    //{
+    //    //pickable object
+    //    _pickObject = _pickableObject;
+    //    //set his new layer
+    //    _pickObject.layer = 0;
+    //    //set his new parent
+    //    _pickObject.transform.parent = transform;
+    //    //set his new position
+    //    _pickObject.transform.position = pickUpPosition.position;
+    //    ReturnMaterial();
+    //}
 
     /// <summary>
     /// drop an object
     /// </summary>
-    private void Drop()
-    {
-        //set the parent of the previous object at null
-        _pickObject.transform.parent = null;
-        //set his position at the same positon of the pickable object
-        _pickObject.transform.position = _pickPosition.position;
-        //reset his layer
-        _pickObject.layer = layerNumber;
-    }
+    //private void Drop()
+    //{
+    //    //set the parent of the previous object at null
+    //    _pickObject.transform.parent = null;
+    //    //set his position at the same positon of the pickable object
+    //    _pickObject.transform.position = _pickPosition.position;
+    //    //reset his layer
+    //    _pickObject.layer = layerNum;
+    //}
     #endregion
 }

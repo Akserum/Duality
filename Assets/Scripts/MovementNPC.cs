@@ -12,9 +12,11 @@ public class MovementNPC : MonoBehaviour
 
     [SerializeField]
     private List<Transform> destinations;
-    //+ ajouter liste d'animations
-    private bool isStandingStill = true;
 
+    [SerializeField]
+    private float timerStandingStill;
+
+    //+ ajouter liste d'animations
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -23,21 +25,14 @@ public class MovementNPC : MonoBehaviour
         {
             destinations.Add(destGo[i].transform);
         }
+        RandomizeDestination();
     }
-
-    // Update is called once per frame
-    void Update()
+    IEnumerator waiter()
     {
-        if (!isStandingStill) { 
-            agent.destination = destination.position;
-        }
-        if (isStandingStill)
-        {
-            randomizeDestination();
-        }
+        yield return new WaitForSeconds(timerStandingStill);
+        agent.isStopped = false;
     }
-
-    private void randomizeDestination()
+    private void RandomizeDestination()
     {
         Transform tmpTest;
         do
@@ -45,13 +40,15 @@ public class MovementNPC : MonoBehaviour
             tmpTest = destinations[Random.Range(0, destinations.Count)];
         } while (tmpTest == destination);
         destination = tmpTest;
-        isStandingStill = false;
+        agent.destination = destination.position;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.position == destination.transform.position)
         {
-            isStandingStill = true;
+            agent.isStopped = true;
+            RandomizeDestination();
+            StartCoroutine(waiter());
         }
     }
 }

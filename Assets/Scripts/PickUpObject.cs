@@ -144,33 +144,6 @@ public class PickUpObject : MonoBehaviour
                 Pick();
         }
     }
-    #endregion
-
-    #region PickObjects
-
-    /// <summary>
-    /// Pick an Object if the mouse 0 button is pressed
-    /// </summary>
-    private void PickingUpObject()
-    {
-        if (!_canPickUp)
-            return;
-
-        if (_inputs.PickUp)
-        {
-            _pickPosition = _pickableObject.transform;
-            //if the player already have an object 
-            if (_pickObject != null)
-            {
-                Drop();
-
-                Pick();
-            }
-            //if not
-            else
-                Pick();
-        }
-    }
 
 
     /// <summary>

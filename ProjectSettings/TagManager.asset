@@ -3,15 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PickableObject
+  - Closet
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - PickablesObjects
+  - InteractibleObjects
   - Water
   - UI
-  - ClosetLayer
+  - 
   - 
   - 
   - 

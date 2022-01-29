@@ -9,7 +9,7 @@ public class PlayerInputs : MonoBehaviour
 
     private bool _interact;
 
-    //Propriétés 
+    //Proprietes 
     public float MoveX => _moveX;
     public float MoveY => _moveY;
     public float MouseX => _mouseX;

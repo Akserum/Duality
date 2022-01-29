@@ -12,6 +12,8 @@ public class PickUpObject : MonoBehaviour
     //
     [SerializeField] private Transform pickUpPosition;
 
+    [SerializeField] private int layerNumber;
+
     private PlayerInputs _inputs;
 
     //pick up
@@ -32,7 +34,7 @@ public class PickUpObject : MonoBehaviour
     void Update()
     {
         CheckPickUp();
-        PickingUpObject();
+        //PickingUpObject();
     }
 
     private void Initialize()
@@ -147,6 +149,6 @@ public class PickUpObject : MonoBehaviour
         //on le place a la position du dernier objet recup
         _pickObject.transform.position = _pickPosition.position;
         //on reset l'objet en pickablesObjects
-        _pickObject.layer = 3;
+        _pickObject.layer = layerNumber;
     }
 }

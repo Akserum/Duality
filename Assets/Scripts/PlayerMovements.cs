@@ -39,7 +39,7 @@ public class PlayerMovements : MonoBehaviour
         _motion = transform.right * _inputs.MoveX + transform.forward * _inputs.MoveY;
         _movement = _motion * speed * Time.deltaTime;
 
-        //physique de gravité
+        //gravity
         if (_cc.isGrounded)
             _verticalSpeed = -gravityValue * 0.25f;
         else

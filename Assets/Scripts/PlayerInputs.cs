@@ -7,15 +7,16 @@ public class PlayerInputs : MonoBehaviour
     private float _moveX, _moveY;
     private float _mouseX, _mouseY;
 
+    private bool _pickUp;
     private bool _interact;
 
-    //Propriétés 
+    //Properties 
     public float MoveX => _moveX;
     public float MoveY => _moveY;
     public float MouseX => _mouseX;
     public float MouseY => _mouseY;
 
-    public bool Interact => _interact;
+    public bool PickUp => _pickUp;
 
     void Update()
     {
@@ -29,6 +30,7 @@ public class PlayerInputs : MonoBehaviour
         _mouseX = Input.GetAxis("Mouse X");
         _mouseY = Input.GetAxis("Mouse Y");
 
-        _interact = Input.GetMouseButtonDown(0);
+        _pickUp = Input.GetMouseButtonDown(0);
+        _interact = Input.GetButtonDown("Interact");
     }
 }

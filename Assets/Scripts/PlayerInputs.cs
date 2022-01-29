@@ -17,6 +17,7 @@ public class PlayerInputs : MonoBehaviour
     public float MouseY => _mouseY;
 
     public bool PickUp => _pickUp;
+    public bool Interact => _interact;
 
     void Update()
     {

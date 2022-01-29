@@ -35,7 +35,7 @@ public class PlayerMovements : MonoBehaviour
 
     private void PlayerMotion()
     {
-        transform.localRotation = Quaternion.Euler(0f, _inputs.camera.transform.rotation.eulerAngles.y, 0);
+        transform.localRotation = Quaternion.Euler(0f, _inputs.camera.transform.rotation.eulerAngles.y, 0); 
         //movements
         _motion = transform.right * _inputs.actions["Movement"].ReadValue<Vector2>().x + transform.forward * _inputs.actions["Movement"].ReadValue<Vector2>().y;
         _movement = _motion * speed * Time.deltaTime;

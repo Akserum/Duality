@@ -13,38 +13,42 @@ public class MovementNPC : MonoBehaviour
     [SerializeField]
     private List<Transform> destinations;
 
-    //+ ajouter liste d'animations
-    private bool isStandingStill = true;
+    [SerializeField]
+    private float timerStandingStill = 4f;
 
+    //anims
+    private Animator _animator;
+
+    public bool StopAgent
+    {
+        get { return agent.isStopped; }
+        set { agent.isStopped = value; }
+    }
+
+    //+ ajouter liste d'animations
     void Start()
     {
+        _animator = GetComponentInChildren<Animator>();
         agent = GetComponent<NavMeshAgent>();
         GameObject[] destGo = GameObject.FindGameObjectsWithTag("Destination");
         for (int i = 0; i < destGo.Length; i++)
         {
             destinations.Add(destGo[i].transform);
         }
+        RandomizeDestination();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!isStandingStill)
-        {
-            agent.destination = destination.position;
-        }
-        else if (isStandingStill)
-        {
-            randomizeDestination();
-        }
+        UpdateAnimations();
     }
-    IEnumerator waiter()
-    {
-        yield return new WaitForSeconds(4);
-        isStandingStill = false;
 
+    private IEnumerator waiter()
+    {
+        yield return new WaitForSeconds(timerStandingStill);
+        agent.isStopped = false;
     }
-    private void randomizeDestination()
+    private void RandomizeDestination()
     {
         Transform tmpTest;
         do
@@ -52,13 +56,20 @@ public class MovementNPC : MonoBehaviour
             tmpTest = destinations[Random.Range(0, destinations.Count)];
         } while (tmpTest == destination);
         destination = tmpTest;
-        StartCoroutine(waiter());
+        agent.destination = destination.position;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.position == destination.transform.position)
         {
-            isStandingStill = true;
+            agent.isStopped = true;
+            RandomizeDestination();
+            StartCoroutine(waiter());
         }
+    }
+
+    private void UpdateAnimations()
+    {
+        _animator.SetBool("NpcMoving", !agent.isStopped);
     }
 }

@@ -16,10 +16,30 @@ public class FieldOfView : MonoBehaviour
 
     public bool canSeePlayer;
 
+    //anims 
+    [SerializeField]
+    private GameObject _worldSpaceCanvas;
+
+    private MovementNPC _movementNpc;
+    private Animator _animator;
+    private float _basedRadius;
+
     private void Start()
     {
         playerRef = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(FOVRoutine());
+        //set the based radius
+        _basedRadius = radius;
+        //anims
+        _animator = GetComponentInChildren<Animator>();
+        _movementNpc = GetComponent<MovementNPC>();
+        _worldSpaceCanvas.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            SpottedPlayer();
     }
 
     private IEnumerator FOVRoutine()
@@ -56,5 +76,23 @@ public class FieldOfView : MonoBehaviour
         }
         else if (canSeePlayer)
             canSeePlayer = false;
+    }
+
+    // fonction a appeller dans le gameManager
+    public void SpottedPlayer()
+    {
+        Debug.Log("je te vois");
+        _animator.SetTrigger("Spotted");
+        _worldSpaceCanvas.SetActive(true);
+        radius = 0;
+        _movementNpc.StopAgent = true;
+    }
+
+    // fonction dans le script pour les anims events
+    public void ResetNpcFov()
+    {
+        _worldSpaceCanvas.SetActive(false);
+        radius = _basedRadius;
+        _movementNpc.StopAgent = false;
     }
 }

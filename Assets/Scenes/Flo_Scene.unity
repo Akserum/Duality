@@ -316,9 +316,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistancePickp: 5
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 8
+  LayerNumPickable: 3
+  LayerNumCloset: 6
   highlightMaterial: {fileID: 2100000, guid: 7f2e7f73975569f4ab6d63fda200406d, type: 2}
   pickUpPosition: {fileID: 823128851}
 --- !u!114 &307059368
@@ -505,7 +504,7 @@ GameObject:
   - component: {fileID: 977417205}
   - component: {fileID: 977417204}
   - component: {fileID: 977417203}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

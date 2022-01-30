@@ -4,17 +4,19 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - PickableObject
+  - Closet
   - Destination
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Wall
+  - InteractibleObjects
   - Water
   - UI
+  - Wall
   - Player
   - PickableObject
-  - 
   - 
   - 
   - 

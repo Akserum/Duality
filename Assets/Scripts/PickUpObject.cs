@@ -67,7 +67,6 @@ public class PickUpObject : MonoBehaviour
             }
             else if(hit.transform.gameObject.tag == "Closet")
             {
-                Debug.Log("Armoire");
                 OpenCloset(hit.transform.gameObject);
             }
         }
@@ -81,6 +80,8 @@ public class PickUpObject : MonoBehaviour
     #region ClosetInteractions
     private void OpenCloset(GameObject obj)
     {
+        obj.GetComponent<ClosetScript>().SetUi();
+
         if (_inputs.Interact)
         {
             Debug.Log(obj.name);

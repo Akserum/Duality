@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ClosetScript : MonoBehaviour
 {
-    private Animator _animator;
+    [SerializeField] private TextMeshProUGUI text;
 
+    private Animator _animator;
     private bool _isOpen;
 
     void Start()
@@ -16,6 +18,11 @@ public class ClosetScript : MonoBehaviour
     public void ClosetBool()
     {
         _isOpen = !_isOpen;
-        _animator.SetBool("IsOpen",_isOpen);
+        _animator.SetBool("IsOpen", _isOpen);
+    }
+
+    public void SetUi()
+    {
+        text.gameObject.SetActive(true);
     }
 }

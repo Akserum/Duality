@@ -59,7 +59,6 @@ public class PickUpObject : MonoBehaviour
         if (Physics.Raycast(ray.origin, ray.direction, out hit, maxDistancePickp, interactibleLayer))
         {
             GetMaterial(hit.transform.gameObject);
-
             if (hit.transform.gameObject.tag == "PickableObject")
             {
                 _canPickUp = true;

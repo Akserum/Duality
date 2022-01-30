@@ -54,16 +54,18 @@ public class GameManager : MonoBehaviour
         playerInput = GameObject.FindObjectOfType<PlayerInput>();
         currentInput = playerInput.currentControlScheme;
         fov = GameObject.FindObjectOfType<FieldOfView>();
-        interactableObjects = GameObject.FindObjectsOfType<InteractableObject>();
         pickUpObject = GameObject.FindObjectOfType<PickUpObject>();
         NextObjective();
     }
     void Update()
     {
+        print("update");
         if (pickUpObject.getCanPickUp)
         {
+            print(pickUpObject.getCanPickUp);
             if (pickUpObject.getPickObject.GetComponent<InteractableObject>().task.objectiveName == currentObjective.task.objectiveName)
             {
+                print("derniere cond");
                 print("test");
                 renderActions.SetActive(true);
                 choixMechant.text = pickUpObject.getPickObject.GetComponent<InteractableObject>().task.mechantChoix;
